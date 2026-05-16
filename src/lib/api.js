@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+export { useFlights } from "../Flight/hooks/useFlights.js";
 
 // ─── HELPERS ──────────────────────────────────────────────────
 

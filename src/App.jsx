@@ -8,10 +8,14 @@ import LoginPage from "./Auth/pages/LoginPage.jsx";
 import RegisterPage from "./Auth/pages/RegisterPage.jsx";
 import ProfilePage from "./Auth/pages/ProfilePage.jsx";
 import GeniusPage from "./Auth/pages/GeniusPage.jsx";
+import FlightsPage from "./Flight/pages/FlightsBookingPage.jsx";
+import CarRentalPage from "./CarRental/pages/CarRentalPage.jsx";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/flights" element={<FlightsPage />} />
+      <Route path="/car-rental" element={<CarRentalPage />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/search" element={<SearchResultsPage />} />
 

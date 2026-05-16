@@ -2,8 +2,14 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import BedIcon from "../../assets/icons/bed.svg?react";
 
 import HelpIcon from "../../assets/icons/help.svg?react";
+import FlightIcon from "../../assets/icons/flight.svg?react";
+import CarIcon from "../../assets/icons/car.svg?react";
 
-const NAV_ITEMS = [{ icon: BedIcon, label: "Жильё", href: "/" }];
+const NAV_ITEMS = [
+{ icon: BedIcon, label: "Жильё", href: "/"},
+{ icon: FlightIcon, label: "Авиабилеты", href: "/flights" },
+{ icon: CarIcon, label: "Аренда автомобилей", href: "/car-rental" },
+];
 
 export default function Header() {
   const navigate = useNavigate();

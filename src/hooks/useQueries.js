@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
+export { useFlights } from "../Flight/hooks/useFlights.js";
 
 import {
   getPopularHotels,

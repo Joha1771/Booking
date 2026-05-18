@@ -40,7 +40,7 @@ export default function ProfilePage() {
   if (loading || !user) return null;
 
   const name = profile?.full_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Пользователь";
-  const initials = name.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2) || "J";
+  const initials = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "J";
 
   const handleSignOut = async () => { await signOut(); router.push("/"); };
 

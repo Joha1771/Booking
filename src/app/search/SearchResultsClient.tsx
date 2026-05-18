@@ -2,15 +2,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
-  Heart, MapPin, ChevronRight, ChevronDown, X, Star, Info,
-} from "lucide-react";
-// SearchResultsPage - Supabase-backed results
-
-
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { searchHotelsClient } from "@/lib/api/hotels.client";
-import {
   Heart,
   MapPin,
   ChevronRight,
@@ -19,6 +10,11 @@ import {
   Star,
   Info,
 } from "lucide-react";
+// SearchResultsPage - Supabase-backed results
+
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { searchHotelsClient } from "@/lib/api/hotels.client";
 
 const CITY_ALIASES = {
   ташкент: "Ташкент",
@@ -450,7 +446,7 @@ const RATING_LABELS = {
 export default function SearchResultsPage() {
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
-  
+
   const [liked, setLiked] = useState({});
   const [showMap, setShowMap] = useState(false);
   const [sortBy, setSortBy] = useState("recommended");

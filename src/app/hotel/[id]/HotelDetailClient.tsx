@@ -2,7 +2,6 @@
 import { getHotelByIdClient } from "@/lib/api/hotels.client";
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { differenceInCalendarDays } from "date-fns";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -18,7 +17,6 @@ import {
   X,
   Users,
 } from "lucide-react";
-import { useState, useEffect } from "react";
 
 import useSearchStore from "@/store/searchStore";
 import DestinationDropdown from "@/components/search/DestinationDropdown";
@@ -461,7 +459,9 @@ function buildPropertySections(hotel) {
   ];
 }
 
-interface Props { id: string; }
+interface Props {
+  id: string;
+}
 
 export default function HotelDetailPage({ id }: Props) {
   // id comes from props in Next.js
@@ -504,20 +504,29 @@ export default function HotelDetailPage({ id }: Props) {
 
   const [hotel, setHotel] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
     if (id) {
-      getHotelByIdClient(id).then(data => {
+      getHotelByIdClient(id).then((data) => {
         setHotel(data);
         setIsLoading(false);
       });
     }
   }, [id]);
 
-  const PHOTOS = hotel ? [
-    hotel.image,
-    ...(Array.from({ length: 7 }, (_, i) => `https://picsum.photos/seed/det${hotel.id}_${i+1}/800/500`))
-  ] : Array.from({ length: 8 }, (_, i) => `https://picsum.photos/seed/det_${i}/800/500`);
+  const PHOTOS = hotel
+    ? [
+        hotel.image,
+        ...Array.from(
+          { length: 7 },
+          (_, i) =>
+            `https://picsum.photos/seed/det${hotel.id}_${i + 1}/800/500`,
+        ),
+      ]
+    : Array.from(
+        { length: 8 },
+        (_, i) => `https://picsum.photos/seed/det_${i}/800/500`,
+      );
 
   const toggleFaq = (i) => setOpenFaq((f) => ({ ...f, [i]: !f[i] }));
 

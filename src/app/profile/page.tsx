@@ -42,7 +42,10 @@ export default function ProfilePage() {
   const name = profile?.full_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Пользователь";
   const initials = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "J";
 
-  const handleSignOut = async () => { await signOut(); router.push("/"); };
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "#f5f5f5" }}>

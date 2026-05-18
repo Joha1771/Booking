@@ -2,6 +2,15 @@
 import { useRouter } from "next/navigation";
 import type { Attraction } from "@/types";
 
+function slugify(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[аа]/g, "a")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "")
+    .replace(/-+/g, "-");
+}
+
 interface Props {
   attractions?: Attraction[];
   isLoading?: boolean;
@@ -16,15 +25,6 @@ export default function AttractionsSection({
   isLoading = false,
 }: Props) {
   const router = useRouter();
-
-  const handleCardClick = (item: Attraction) => {
-    // Use item.slug if available, otherwise encode city name directly
-    // citySlug page reads pathname and passes to Supabase as city filter
-    const destination = item.slug
-      ? `/attractions/${item.slug}`
-      : `/attractions/${encodeURIComponent(item.city || "all")}`;
-    router.push(destination);
-  };
 
   return (
     <section style={{ padding: "32px 0" }}>
@@ -84,7 +84,9 @@ export default function AttractionsSection({
             : attractions.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() => handleCardClick(item)}
+                  onClick={() =>
+                    router.push(`/attractions/${slugify(item.city || "")}`)
+                  }
                   style={{
                     borderRadius: 12,
                     overflow: "hidden",

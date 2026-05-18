@@ -463,7 +463,9 @@ export default function SearchResultsPage() {
   const [showPrivateBanner, setShowPrivateBanner] = useState(true);
 
   // Read destination from URL
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(
+    typeof window !== "undefined" ? window.location.search : "",
+  );
   const rawDestination = searchParams.get("destination") || "";
 
   // Resolve city name

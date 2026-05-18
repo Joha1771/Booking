@@ -32,7 +32,7 @@ const NAV_TABS = [
   "Отзывы гостей",
 ];
 
-function clampScore(score) {
+function clampScore(score: number) {
   return Math.min(10, Math.max(6, Number(score || 0)));
 }
 

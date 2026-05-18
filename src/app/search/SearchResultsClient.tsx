@@ -463,8 +463,7 @@ export default function SearchResultsPage() {
   const [showPrivateBanner, setShowPrivateBanner] = useState(true);
 
   // Read destination from URL
-  const searchParamsHook2 = useSearchParams();
-  const searchParams = new URLSearchParams(searchParamsHook2?.toString() || "");
+  const searchParams = new URLSearchParams(location.search);
   const rawDestination = searchParams.get("destination") || "";
 
   // Resolve city name
@@ -473,10 +472,15 @@ export default function SearchResultsPage() {
     return CITY_ALIASES[lower] || rawDestination || "Ташкент";
   }, [rawDestination]);
 
-  const { data: backendHotels = [], isLoading: isHotelsLoading } =
-    useSearchHotels({
-      destination: resolvedCity,
-    });
+  const [backendHotels, setBackendHotels] = useState([]);
+  const [isHotelsLoading, setIsHotelsLoading] = useState(true);
+  useEffect(() => {
+    setIsHotelsLoading(true);
+    searchHotelsClient(resolvedCity)
+      .then((data) => setBackendHotels(data || []))
+      .catch(() => setBackendHotels([]))
+      .finally(() => setIsHotelsLoading(false));
+  }, [resolvedCity]);
 
   const CITY_COUNTRIES = {
     Дубай: "ОАЭ",

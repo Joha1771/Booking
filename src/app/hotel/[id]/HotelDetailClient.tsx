@@ -36,7 +36,7 @@ function clampScore(score: number) {
   return Math.min(10, Math.max(6, Number(score || 0)));
 }
 
-function formatScore(score) {
+function formatScore(score: number) {
   const value = Number(score || 0);
   return value ? value.toFixed(1).replace(".", ",") : "—";
 }
@@ -648,7 +648,7 @@ export default function HotelDetailPage({ id }: Props) {
   const reviews = buildReviews(hotel);
   const travelerQuestions = buildTravelerQuestions(hotel);
   const rooms = buildRooms(hotel);
-  const roomTypes = [...new Set(rooms.map((room) => room.type))];
+  const roomTypes = [...new Set(rooms.map((room: any) => room.type))];
   const faq = buildFaq(hotel);
   const nearby = buildNearby(hotel);
   const descriptionParagraphs = buildDescriptionParagraphs(hotel);
@@ -716,7 +716,7 @@ export default function HotelDetailPage({ id }: Props) {
     selectedTariffRows.length > 0 &&
     selectedTariffRows.every((item) => item.tariff.no_card);
   const selectedTariffKeys = new Set(
-    selectedTariffRows.map((item) =>
+    selectedTariffRows.map((item: any) =>
       getTariffKey(item.room.id, item.tariffIndex),
     ),
   );
@@ -2000,7 +2000,7 @@ export default function HotelDetailPage({ id }: Props) {
                                   : "#fff",
                               }}
                             >
-                              {[0, 1, 2, 3, 4, 5].map((n) => (
+                              {[0, 1, 2, 3, 4, 5].map((n: any) => (
                                 <option key={n}>{n}</option>
                               ))}
                             </select>
@@ -2349,7 +2349,7 @@ export default function HotelDetailPage({ id }: Props) {
                   "Расположение",
                   "Завтрак",
                   "Бассейн",
-                ].map((t) => (
+                ].map((t: any) => (
                   <button
                     key={t}
                     style={{

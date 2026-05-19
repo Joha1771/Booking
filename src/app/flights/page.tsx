@@ -9,36 +9,6 @@ export default function FlightsBookingPage() {
   );
 }
 
-function resolveAirport(value, airports) {
-  if (!value || !airports?.length) return null;
-
-  const codeMatch = String(value).match(/\(([A-Z]{3})\)/);
-  if (codeMatch) {
-    const matchedByCode = airports.find(
-      (airport) => airport.code === codeMatch[1],
-    );
-    if (matchedByCode) return matchedByCode;
-  }
-
-  const normalizedValue = normalizeText(value);
-  return (
-    airports.find(
-      (airport) =>
-        normalizeText(airport.code) === normalizedValue ||
-        normalizeText(airport.city) === normalizedValue ||
-        normalizeText(formatAirportLabel(airport)) === normalizedValue ||
-        normalizeText(airport.name).includes(normalizedValue),
-    ) || null
-  );
-}
-
-function durationToMinutes(value) {
-  const text = String(value || "");
-  const hours = Number(text.match(/(\d+)\s*(?:h|ч)/i)?.[1] || 0);
-  const minutes = Number(text.match(/(\d+)\s*(?:m|м)/i)?.[1] || 0);
-  return hours * 60 + minutes;
-}
-
 function stopBucket(value) {
   const text = String(value || "").toLowerCase();
   if (text.includes("nonstop") || text.includes("без перес")) return "nonstop";

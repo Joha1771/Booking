@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { useState, useRef, useEffect, useMemo } from "react";
 import {
   ArrowLeftRight,
@@ -2175,7 +2176,7 @@ function ResultCard({ flight, selected, onSelect }) {
   );
 }
 
-export default function FlightsBookingPage() {
+function FlightsBookingPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const defaultDepartDate = useMemo(
@@ -2969,5 +2970,13 @@ export default function FlightsBookingPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function FlightsBookingPage() {
+  return (
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <FlightsBookingPageClient />
+    </Suspense>
   );
 }

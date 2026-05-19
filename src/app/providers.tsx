@@ -9,7 +9,9 @@ const queryClient = new QueryClient({
 
 function AuthInit({ children }: { children: React.ReactNode }) {
   const init = useAuthStore((s) => s.init);
-  useEffect(() => { init(); }, [init]);
+  useEffect(() => {
+    init();
+  }, [init]);
   return <>{children}</>;
 }
 

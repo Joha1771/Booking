@@ -46,7 +46,7 @@ export default function AttractionsCityPage() {
   const navigate = (p: string) => router.push(p);
   const searchParamsHook = useSearchParams();
   const pathname = usePathname();
-  const citySlug = decodeURIComponent(pathname.split("/").pop() || "all");
+  const citySlug = pathname.split("/").pop() || "all";
 
   const [searchDraft, setSearchDraft] = useState(
     searchParamsHook.get("query") || "",

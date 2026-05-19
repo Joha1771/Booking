@@ -462,9 +462,15 @@ export default function SearchResultsPage() {
   const [showPrivacyBanner, setShowPrivacyBanner] = useState(true);
   const [showPrivateBanner, setShowPrivateBanner] = useState(true);
 
-  // Read destination from URL
-  const searchParams = new URLSearchParams(location.search);
-  const rawDestination = searchParams.get("destination") || "";
+
+  // Read destination from URL (client-side only)
+  const [rawDestination, setRawDestination] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      setRawDestination(searchParams.get("destination") || "");
+    }
+  }, []);
 
   // Resolve city name
   const resolvedCity = useMemo(() => {

@@ -24,6 +24,80 @@ import {
   useFlights,
 } from "../hooks/useFlights";
 
+// ── Missing helpers & constants ──────────────────────────────────────────────
+
+function normalizeText(text: string): string {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[аА]/g, "a")
+    .replace(/[еЕёЁ]/g, "e")
+    .replace(/[иИ]/g, "i")
+    .replace(/[оО]/g, "o")
+    .replace(/[уУ]/g, "u")
+    .trim();
+}
+
+function formatAirportLabel(
+  airport: { city: string; code: string } | null | undefined,
+): string {
+  if (!airport) return "";
+  return `${airport.city} (${airport.code})`;
+}
+
+function resolveAirport(
+  label: string,
+  airports: { city: string; code: string; name: string; country: string }[],
+) {
+  if (!label || !airports.length) return null;
+  const upper = label.toUpperCase();
+  const codeMatch = upper.match(/\(([A-Z]{3})\)/);
+  if (codeMatch) {
+    return airports.find((a) => a.code === codeMatch[1]) ?? null;
+  }
+  const norm = normalizeText(label);
+  return (
+    airports.find((a) => normalizeText(a.city) === norm) ??
+    airports.find((a) => normalizeText(a.city).includes(norm)) ??
+    null
+  );
+}
+
+function formatCurrency(value: number | string): string {
+  const num = Number(value || 0);
+  if (!num) return "—";
+  return `$${num.toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
+}
+
+function durationToMinutes(duration: string): number {
+  if (!duration) return 0;
+  const h = duration.match(/(\d+)\s*h/i);
+  const m = duration.match(/(\d+)\s*m/i);
+  return (h ? parseInt(h[1]) * 60 : 0) + (m ? parseInt(m[1]) : 0);
+}
+
+const AIRLINE_STYLES: Record<string, { abbr: string; bg: string }> = {
+  "Uzbekistan Airways": { abbr: "HY", bg: "#1a56a0" },
+  "Qanot Sharq": { abbr: "HH", bg: "#1a8c4e" },
+  "Air Arabia": { abbr: "G9", bg: "#e30613" },
+  flydubai: { abbr: "FZ", bg: "#e55000" },
+  "Turkish Airlines": { abbr: "TK", bg: "#c8102e" },
+  Aeroflot: { abbr: "SU", bg: "#003087" },
+  Emirates: { abbr: "EK", bg: "#d71920" },
+  Lufthansa: { abbr: "LH", bg: "#05164d" },
+  "Air Astana": { abbr: "KC", bg: "#00a0e3" },
+  "S7 Airlines": { abbr: "S7", bg: "#00b74f" },
+  Pegasus: { abbr: "PC", bg: "#ff6600" },
+};
+
+const HERO_IMAGES = [
+  "https://picsum.photos/seed/flight-hero-1/600/244",
+  "https://picsum.photos/seed/flight-hero-2/600/244",
+  "https://picsum.photos/seed/flight-hero-3/600/244",
+  "https://picsum.photos/seed/flight-hero-4/600/244",
+];
+
+// ────────────────────────────────────────────────────────────────────────────
+
 function stopBucket(value) {
   const text = String(value || "").toLowerCase();
   if (text.includes("nonstop") || text.includes("без перес")) return "nonstop";
@@ -1947,6 +2021,7 @@ function ResultCard({ flight, selected, onSelect }) {
       }}
     >
       <div
+        className="fl-card-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "minmax(0, 1fr) minmax(220px, 0.3fr)",
@@ -2028,6 +2103,7 @@ function ResultCard({ flight, selected, onSelect }) {
         </div>
 
         <aside
+          className="fl-card-aside"
           style={{
             borderLeft: "1px solid #eef2f7",
             padding: 18,
@@ -2336,6 +2412,20 @@ export default function FlightsBookingPageClient() {
   if (!isResultsView) {
     return (
       <div style={{ minHeight: "100vh", background: "#ffffff" }}>
+        <style>{`
+          @media (max-width: 860px) {
+            .fl-hero-grid { grid-template-columns: 1fr !important; padding: 24px 16px 28px !important; }
+            .fl-hero-photos { display: none !important; }
+            .fl-hero-spacer { height: 32px !important; }
+          }
+          @media (max-width: 860px) {
+            .fl-results-layout { grid-template-columns: 1fr !important; }
+            .fl-sidebar { display: none !important; }
+            .fl-card-grid { grid-template-columns: 1fr !important; }
+            .fl-card-aside { border-left: none !important; border-top: 1px solid #eef2f7 !important; }
+            .fl-sort-tabs button { min-width: 0 !important; flex: 1 1 auto !important; }
+          }
+        `}</style>
         <Header />
 
         <section
@@ -2346,6 +2436,7 @@ export default function FlightsBookingPageClient() {
         >
           <div style={{ maxWidth: 1380, margin: "0 auto", padding: "0 20px" }}>
             <div
+              className="fl-hero-grid"
               style={{
                 background: "#eef2f5",
                 borderRadius: 0,
@@ -2400,6 +2491,7 @@ export default function FlightsBookingPageClient() {
               </div>
 
               <div
+                className="fl-hero-photos"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
@@ -2436,7 +2528,7 @@ export default function FlightsBookingPageClient() {
               </div>
             </div>
 
-            <div style={{ height: 270 }} />
+            <div className="fl-hero-spacer" style={{ height: 270 }} />
           </div>
         </section>
 
@@ -2447,6 +2539,23 @@ export default function FlightsBookingPageClient() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f3f4f6" }}>
+      <style>{`
+        @media (max-width: 860px) {
+          .fl-hero-grid { grid-template-columns: 1fr !important; padding: 24px 16px 28px !important; }
+          .fl-hero-photos { display: none !important; }
+          .fl-hero-spacer { height: 32px !important; }
+          .fl-results-layout { grid-template-columns: 1fr !important; }
+          .fl-sidebar { display: none !important; }
+          .fl-card-grid { grid-template-columns: 1fr !important; }
+          .fl-card-aside { border-left: none !important; border-top: 1px solid #eef2f7 !important; }
+          .fl-sort-tabs { flex-wrap: wrap !important; }
+          .fl-sort-tabs button { flex: 1 1 auto !important; min-width: 120px !important; }
+          .fl-results-header { flex-direction: column !important; align-items: flex-start !important; }
+        }
+        @media (max-width: 480px) {
+          .fl-sort-tabs button { min-width: 100% !important; }
+        }
+      `}</style>
       <Header />
 
       <section style={{ background: "#003b95", padding: "20px 0 18px" }}>
@@ -2534,6 +2643,7 @@ export default function FlightsBookingPageClient() {
         </div>
 
         <div
+          className="fl-results-layout"
           style={{
             display: "grid",
             gridTemplateColumns: "290px minmax(0, 1fr)",
@@ -2542,6 +2652,7 @@ export default function FlightsBookingPageClient() {
           }}
         >
           <div
+            className="fl-sidebar"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -2668,6 +2779,7 @@ export default function FlightsBookingPageClient() {
 
           <div>
             <div
+              className="fl-sort-tabs"
               style={{
                 background: "#fff",
                 border: "1px solid #dbe3ec",

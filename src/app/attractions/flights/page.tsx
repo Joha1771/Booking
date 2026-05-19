@@ -22,7 +22,7 @@ import {
   useFlightAirports,
   useFlightRoutes,
   useFlights,
-} from "../hooks/useFlights";
+} from "../../hooks/useFlights";
 
 const AIRLINE_STYLES = {
   "Centrum Air": { abbr: "CA", bg: "#003580" },

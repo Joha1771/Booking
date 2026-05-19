@@ -1,63 +1,12 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useRef, useEffect, useMemo } from "react";
-import {
-  ArrowLeftRight,
-  CalendarDays,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Info,
-  LoaderCircle,
-  Minus,
-  Plane,
-  Plus,
-  Search,
-  Share2,
-  Users,
-} from "lucide-react";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import {
-  useFlightAirports,
-  useFlightRoutes,
-  useFlights,
-} from "../hooks/useFlights";
+import { Suspense } from "react";
+import FlightsBookingPageClient from "./FlightsBookingPageClient";
 
-const AIRLINE_STYLES = {
-  "Centrum Air": { abbr: "CA", bg: "#003580" },
-  "Uzbekistan Airways": { abbr: "HY", bg: "#00a550" },
-  flydubai: { abbr: "FZ", bg: "#e31837" },
-  "Hahn Air": { abbr: "HR", bg: "#1e3a8a" },
-  Emirates: { abbr: "EK", bg: "#c8102e" },
-  "Qatar Airways": { abbr: "QR", bg: "#5c0632" },
-  "Azerbaijan Airlines": { abbr: "J2", bg: "#0057b7" },
-  "Air Arabia": { abbr: "G9", bg: "#cc0000" },
-  "Turkish Airlines": { abbr: "TK", bg: "#e21a22" },
-  "Etihad Airways": { abbr: "EY", bg: "#7c5a21" },
-  "Pegasus Airlines": { abbr: "PC", bg: "#f97316" },
-  "Air Astana": { abbr: "KC", bg: "#0f766e" },
-};
-
-const HERO_IMAGES = [
-  "https://content.r9cdn.net/frontier-experimental/assets/C4mMXIMv2W.png",
-  "https://content.r9cdn.net/frontier-experimental/assets/B78-YSGPh-.png",
-  "https://content.r9cdn.net/frontier-experimental/assets/BAWXupsgkG.png",
-  "https://content.r9cdn.net/frontier-experimental/assets/D9SjeOszg-.png",
-];
-
-function normalizeText(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase();
-}
-
-function formatCurrency(value) {
-  return `UZS ${Math.round(Number(value || 0)).toLocaleString("ru-RU")}`;
-}
-
-function formatAirportLabel(airport) {
-  return airport ? `${airport.city} (${airport.code})` : "";
+export default function FlightsBookingPage() {
+  return (
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <FlightsBookingPageClient />
+    </Suspense>
+  );
 }
 
 function resolveAirport(value, airports) {
